@@ -66,7 +66,7 @@ export default function ExploreSection() {
             className="relative"
           >
             <div className="relative h-[400px] rounded-xl overflow-hidden shadow-xl">
-              <Image src="/vr-travel.jpg" alt="Virtual reality travel experience" fill className="object-cover" />
+              <Image src="/new.jpg" alt="Virtual reality travel experience" fill className="object-cover" />
             </div>
 
             {/* Decorative elements */}

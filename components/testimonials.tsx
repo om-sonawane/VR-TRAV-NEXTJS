@@ -12,7 +12,7 @@ const testimonials = [
     location: "New York, USA",
     quote:
       "DreamDrift VR has completely changed how I plan my trips. Being able to explore destinations in 360° before booking gives me so much confidence in my travel decisions.",
-    avatar: "/avatars/avatar-1.jpg",
+    avatar: "/person1.jpg",
     rating: 5,
   },
   {
@@ -20,7 +20,7 @@ const testimonials = [
     location: "Toronto, Canada",
     quote:
       "As someone with limited mobility, DreamDrift VR allows me to experience places I may never physically visit. The 360° views are incredibly immersive and detailed.",
-    avatar: "/avatars/avatar-2.jpg",
+    avatar: "/person2.jpg",
     rating: 5,
   },
   {
@@ -28,7 +28,7 @@ const testimonials = [
     location: "London, UK",
     quote:
       "I use DreamDrift VR to reminisce about places I've visited and to scout new destinations. The interface is intuitive and the panoramas are stunning.",
-    avatar: "/avatars/avatar-3.jpg",
+    avatar: "/person3.jpg",
     rating: 4,
   },
 ]

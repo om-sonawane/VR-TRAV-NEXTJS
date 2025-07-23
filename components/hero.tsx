@@ -32,7 +32,7 @@ export default function Hero() {
       {/* Background image with overlay */}
       <div className="absolute inset-0 z-0">
         <video
-          src="/herobg1.mp4"autoPlay loop muted playsInline
+          src="/hero-bg.mp4"autoPlay loop muted playsInline
           className="object-cover w-full h-full"
         />
         {/* <div className="absolute inset-0 bg-gradient-to-r from-purple-900/70 to-black/50 dark:from-purple-950/80 dark:to-black/70" /> */}
