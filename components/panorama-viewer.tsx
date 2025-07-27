@@ -1,9 +1,9 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { Button } from "@/components/ui/button"
 import { Maximize2, Minimize2, RotateCcw, Settings, Volume2, VolumeX } from "lucide-react"
-import { motion } from "framer-motion"
+import { motion, AnimatePresence } from "framer-motion"
 
 interface PanoramaViewerProps {
   src: string
@@ -16,6 +16,8 @@ export default function PanoramaViewer({ src, title, className = "" }: PanoramaV
   const [isVRMode, setIsVRMode] = useState(false)
   const [hasAudio, setHasAudio] = useState(false)
   const [showControls, setShowControls] = useState(true)
+  const [isLoading, setIsLoading] = useState(true)
+  const iframeRef = useRef<HTMLIFrameElement>(null)
 
   useEffect(() => {
     const handleFullscreenChange = () => {
@@ -25,6 +27,19 @@ export default function PanoramaViewer({ src, title, className = "" }: PanoramaV
     document.addEventListener("fullscreenchange", handleFullscreenChange)
     return () => document.removeEventListener("fullscreenchange", handleFullscreenChange)
   }, [])
+
+  // Handle iframe load
+  const handleIframeLoad = () => {
+    // Add a small delay to ensure the panorama content is fully rendered
+    setTimeout(() => {
+      setIsLoading(false)
+    }, 1500)
+  }
+
+  // Reset loading state when src changes
+  useEffect(() => {
+    setIsLoading(true)
+  }, [src])
 
   const toggleFullscreen = async () => {
     const element = document.getElementById("panorama-container")
@@ -43,7 +58,9 @@ export default function PanoramaViewer({ src, title, className = "" }: PanoramaV
 
   const resetView = () => {
     // This would reset the panorama view to default position
-    window.location.reload()
+    if (iframeRef.current) {
+      iframeRef.current.src = iframeRef.current.src
+    }
   }
 
   return (
@@ -55,19 +72,38 @@ export default function PanoramaViewer({ src, title, className = "" }: PanoramaV
         }`}
       >
         <iframe
+          ref={iframeRef}
           src={`${src}${isVRMode ? "&mode=vr" : ""}&autoplay=1`}
           className="w-full h-full border-0"
           title={`360° view of ${title}`}
           allowFullScreen
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          onLoad={handleIframeLoad}
         />
+
+        {/* Loading Overlay */}
+        <AnimatePresence>
+          {isLoading && (
+            <motion.div
+              initial={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.5 }}
+              className="absolute inset-0 bg-black/20 flex items-center justify-center z-20"
+            >
+              <div className="bg-white/90 backdrop-blur-sm rounded-lg p-4 text-center">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-2"></div>
+                <p className="text-sm text-muted-foreground">Loading 360° Experience...</p>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         {/* Enhanced Controls Overlay */}
         <motion.div
           initial={{ opacity: 1 }}
           animate={{ opacity: showControls ? 1 : 0 }}
           transition={{ duration: 0.3 }}
-          className="absolute bottom-4 left-4 right-4 flex justify-between items-center"
+          className="absolute bottom-4 left-4 right-4 flex justify-between items-center z-10"
           onMouseEnter={() => setShowControls(true)}
           onMouseLeave={() => setShowControls(false)}
         >
@@ -116,18 +152,10 @@ export default function PanoramaViewer({ src, title, className = "" }: PanoramaV
 
         {/* VR Mode Indicator */}
         {isVRMode && (
-          <div className="absolute top-4 left-4 bg-primary/90 backdrop-blur-sm rounded-full px-4 py-2 text-white text-sm font-medium">
+          <div className="absolute top-4 left-4 bg-primary/90 backdrop-blur-sm rounded-full px-4 py-2 text-white text-sm font-medium z-10">
             VR Mode Active
           </div>
         )}
-
-        {/* Loading Overlay */}
-        <div className="absolute inset-0 bg-black/20 flex items-center justify-center">
-          <div className="bg-white/90 backdrop-blur-sm rounded-lg p-4 text-center">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-2"></div>
-            <p className="text-sm text-muted-foreground">Loading 360° Experience...</p>
-          </div>
-        </div>
       </div>
 
       {/* Enhanced Instructions */}

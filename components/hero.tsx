@@ -98,11 +98,11 @@ export default function Hero() {
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 1.2, duration: 0.8 }}
-          className="absolute bottom-[-100px] right-[-50px] md:right-[-100px] opacity-30 pointer-events-none hidden md:block"
+          className="absolute bottom-[150px] right-[-50px] md:right-[-100px] opacity-30 pointer-events-none hidden md:block"
         >
-          <div className="relative w-[300px] h-[300px] animate-float">
+          <div className="relative w-[200px] h-[200px] animate-float">
             <Image
-              src="/vr-headset.png"
+              src="/headset.webp"
               alt="VR Headset"
               fill
               className="object-contain"
