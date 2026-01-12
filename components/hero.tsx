@@ -19,6 +19,7 @@ const destinations = [
 
 export default function Hero() {
   const [currentDestination, setCurrentDestination] = useState(0);
+  const [currentBgImage, setCurrentBgImage] = useState(1);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -27,16 +28,26 @@ export default function Hero() {
     return () => clearInterval(interval);
   }, []);
 
+  useEffect(() => {
+    const bgInterval = setInterval(() => {
+      setCurrentBgImage((prev) => (prev === 8 ? 1 : prev + 1));
+    }, 5000);
+    return () => clearInterval(bgInterval);
+  }, []);
+
   return (
     <div className="relative h-[90vh] flex items-center justify-center overflow-hidden">
       {/* Background image with overlay */}
       <div className="absolute inset-0 z-0">
-        <video
-          src="/hero-bg.mp4"autoPlay loop muted playsInline
-          className="object-cover w-full h-full"
+        <Image
+          src={`/${currentBgImage}.jpg`}
+          alt="Hero Background"
+          layout="fill"
+          objectFit="cover"
+          className="opacity-80"
         />
-        {/* <div className="absolute inset-0 bg-gradient-to-r from-purple-900/70 to-black/50 dark:from-purple-950/80 dark:to-black/70" /> */}
       </div>
+      
 
       {/* Content */}
       <div className="relative z-10 text-center text-white px-4 sm:px-6 lg:px-8 max-w-4xl">
